@@ -52,11 +52,11 @@ PACKAGES += " \
 
 FILES_${PN} += " \
     ${libdir}/girepository-1.0 ${datadir}/gir-1.0 \
-    ${libdir}/tmpfiles.d/ostree*.conf \
+    ${exec_prefix}/lib/tmpfiles.d/ostree*.conf \
 "
 SYSTEMD_SERVICE_${PN} = "ostree-prepare-root.service ostree-remount.service"
 
-FILES_${PN}-systemd-generator = "${libdir}/systemd/system-generators"
+FILES_${PN}-systemd-generator = "${systemd_unitdir}/system-generators"
 FILES_${PN}-bash-completion = "${datadir}/bash-completion/completions/ostree"
 
 
@@ -64,6 +64,14 @@ do_configure_prepend() {
     cd ${S}
     NOCONFIGURE=1 ./autogen.sh
     cd -
+}
+
+do_install_append() {
+    # we don't need these services for flatpak: they seem to be used for whole
+    # filesystems on the host
+    rm -f ${D}${exec_prefix}/lib/ostree/ostree-remount
+    rm -f ${D}${exec_prefix}/lib/ostree/ostree-prepare-root
+    rmdir ${D}${exec_prefix}/lib/ostree
 }
 
 BBCLASSEXTEND = "native"

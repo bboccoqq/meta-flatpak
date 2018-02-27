@@ -57,8 +57,8 @@ PACKAGES =+ " \
 "
 
 FILES_${PN} += " \
-    ${libdir}/systemd/user/*.service \
-    ${libdir}/systemd/user/dbus.service.d/*.conf \
+    ${exec_prefix}/lib/systemd/user/*.service \
+    ${exec_prefix}/lib/systemd/user/dbus.service.d/*.conf \
     ${libdir}/girepository-1.0 \
     ${datadir}/gir-1.0 \
     ${datadir}/dbus-1/services/*.service \
